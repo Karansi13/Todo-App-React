@@ -4,6 +4,7 @@ import TodoItems from "./components/TodoItems";
 import WelcomeMessage from "./components/WelcomeMessage";
 import "./App.css";
 import { useState } from "react";
+import { TodoItemsContext } from "./store/todo-items-store";
 
 function App() {
   // const initialTodoItems = [
@@ -25,7 +26,7 @@ function App() {
   
   const [todoItems, setTodoItems] = useState([])
 
-  const onNewItem = (itemName, itemDueDate) => {
+  const addNewItem = (itemName, itemDueDate) => {
       console.log(`item name: ${itemName} date: ${itemDueDate}`)
       const newTodoItems = [
         ...todoItems,
@@ -36,19 +37,27 @@ function App() {
 // ... spread operator purani values use krnna h to use kiye hai
 
 // filter ki defination h ki jab tk true hoti h condittion vo final array me jate jati h aur jaisse hi false hhui condition vo drop krjati hai
-  const hanndleDeleteItems = (todoItemName) => {
+  const deleteItem = (todoItemName) => {
     const newTodoItems = todoItems.filter(item=> item.name !== todoItemName)
     setTodoItems(newTodoItems)
     console.log(`Item deleted : ${todoItemName}`)
   }
 
+  
   return (
+    <TodoItemsContext.Provider value={{
+      todoItems: todoItems,
+      addNewItem: addNewItem,
+      deleteItem: deleteItem,
+      }}>
+      {/* .provider lagaa ke as a component  use kre */}
     <center className="todo-container">
       <AppName />
-      <AddTodo onNewItem={onNewItem} />
-      {todoItems.length === 0 &&<WelcomeMessage/>}
-      <TodoItems todoItems={todoItems} onDeleteClick={hanndleDeleteItems}></TodoItems>
+      <AddTodo/>
+      <WelcomeMessage/>
+      <TodoItems></TodoItems>
     </center>
+    </TodoItemsContext.Provider>
   );
 }
 

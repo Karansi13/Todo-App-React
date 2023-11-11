@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import Styles from "./WelcomeMeassage..module.css"
+import { TodoItemsContext } from "../store/todo-items-store";
 
 const WelcomeMessage = () => {
+
+    const {todoItems} = useContext(TodoItemsContext)
 return (
-    <p className={Styles.welcome}>Enjoy Your Day</p>
+   todoItems.length === 0 && <p className={Styles.welcome}>Enjoy Your Day</p>
 )
 }
 
